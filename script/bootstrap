@@ -4,7 +4,16 @@ function main {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
   source "$shome/script/profile"
 
-  uname -a
+  local url_ecs_Darwin="https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-darwin-amd64-v${ECS_VERSION}"
+  local url_ecs_Linux="https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-v${ECS_VERSION}"
+
+  local url_ecs="url_ecs_$(uname -s)"
+  local fnm_ecs="$(basename "${!url_ecs}")"
+  cache curl "$fnm_ecs" "${!url_ecs}"
+
+  mkdir -p "$shome/bin"
+  rsync -ia "${BASEBOX_CACHE}/curl/$fnm_ecs" "$shome/bin/ecs"
+  chmod 755 "$shome/bin/ecs"
 }
 
 main "$@"
