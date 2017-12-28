@@ -1,4 +1,6 @@
 {
   "require": [],
-  "versions": {}
+  "versions": {
+    "ecs": "aws/amazon-ecs-cli"
+  }
 }
