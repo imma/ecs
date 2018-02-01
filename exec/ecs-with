@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+function main {
+  local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
+  source "$shome/script/profile"
+
+  local nm_cluster="$1"; shift
+
+  local pth_home="$(mktemp -d -t XXXXXX)"
+  trap "$(printf 'rm -rf %q' "$pth_home")" EXIT
+
+  export HOME="$pth_home"
+  ecs configure --cluster "$nm_cluster" --config-name "$nm_cluster"
+  ecs configure default --config-name "$nm_cluster"
+
+  exec ecs "$@"
+}
+
+source sub "$BASH_SOURCE" "$@"

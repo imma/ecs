@@ -11,9 +11,10 @@ function main {
   local fnm_ecs="$(basename "${!url_ecs}")"
   cache curl "$fnm_ecs" "${!url_ecs}"
 
-  mkdir -p "$shome/bin"
-  rsync -ia "${BASEBOX_CACHE}/curl/$fnm_ecs" "$shome/bin/ecs"
-  chmod 755 "$shome/bin/ecs"
+  mkdir -p "$shome/vendor"
+  rsync -ia "${BASEBOX_CACHE}/curl/$fnm_ecs" "$shome/vendor/ecs-${ECS_VERSION}"
+  chmod 755 "$shome/vendor/ecs-${ECS_VERSION}"
+  ln -nfs "ecs-${ECS_VERSION}" "$shome/vendor/ecs"
 }
 
 main "$@"
